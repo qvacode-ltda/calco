@@ -1,0 +1,7 @@
+dist
+.astro
+.wrangler
+node_modules
+public
+package-lock.json
+examples
