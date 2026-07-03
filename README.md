@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://qvacode.github.io/calco/"><img src="https://img.shields.io/badge/live_demo-tailwindcss.com_clone-22D3EE?style=flat-square&labelColor=0A0E1A" alt="Live demo" /></a>
+  <a href="https://qvacode-ltda.github.io/calco/"><img src="https://img.shields.io/badge/live_demo-tailwindcss.com_clone-22D3EE?style=flat-square&labelColor=0A0E1A" alt="Live demo" /></a>
   <img src="https://img.shields.io/badge/Astro-7-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=astro&logoColor=22D3EE" alt="Astro 7" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=tailwindcss&logoColor=22D3EE" alt="Tailwind CSS v4" />
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=cloudflareworkers&logoColor=22D3EE" alt="Cloudflare Workers" />
@@ -43,7 +43,7 @@ Judge it yourself — we pointed Calco at one of the hardest homepages on the in
 |              |                                                                        |
 | ------------ | ---------------------------------------------------------------------- |
 | **Original** | <https://tailwindcss.com>                                              |
-| **Clone**    | <https://qvacode.github.io/calco/> (auto-deployed from this repo)      |
+| **Clone**    | <https://qvacode-ltda.github.io/calco/> (auto-deployed from this repo)      |
 | **Source**   | [`examples/tailwindcss.com`](examples/tailwindcss.com)                 |
 
 Everything in the demo is rebuilt as real code: the hatch-rail frame, the live bento demo
@@ -55,7 +55,7 @@ You need **Node 20+** (22 recommended) and **[Claude Code](https://claude.com/cl
 
 ```bash
 # 1. Get the code — or click "Use this template" on GitHub
-git clone https://github.com/qvacode/calco my-site && cd my-site
+git clone https://github.com/qvacode-ltda/calco my-site && cd my-site
 
 # 2. Install everything: deps + the Playwright browser used for extraction
 npm run setup

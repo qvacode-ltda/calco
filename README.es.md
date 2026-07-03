@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://qvacode.github.io/calco/"><img src="https://img.shields.io/badge/demo_en_vivo-clon_de_tailwindcss.com-22D3EE?style=flat-square&labelColor=0A0E1A" alt="Demo en vivo" /></a>
+  <a href="https://qvacode-ltda.github.io/calco/"><img src="https://img.shields.io/badge/demo_en_vivo-clon_de_tailwindcss.com-22D3EE?style=flat-square&labelColor=0A0E1A" alt="Demo en vivo" /></a>
   <img src="https://img.shields.io/badge/Astro-7-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=astro&logoColor=22D3EE" alt="Astro 7" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=tailwindcss&logoColor=22D3EE" alt="Tailwind CSS v4" />
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F4F7FB?style=flat-square&labelColor=0A0E1A&logo=cloudflareworkers&logoColor=22D3EE" alt="Cloudflare Workers" />
@@ -44,7 +44,7 @@ Júzgalo tú mismo: apuntamos Calco a una de las homepages más difíciles de in
 |              |                                                                       |
 | ------------ | ---------------------------------------------------------------------- |
 | **Original** | <https://tailwindcss.com>                                              |
-| **Clon**     | <https://qvacode.github.io/calco/> (auto-desplegado desde este repo)   |
+| **Clon**     | <https://qvacode-ltda.github.io/calco/> (auto-desplegado desde este repo)   |
 | **Código**   | [`examples/tailwindcss.com`](examples/tailwindcss.com)                 |
 
 Todo en la demo está reconstruido como código real: el marco de raíles con tramado, los demos
@@ -56,7 +56,7 @@ Necesitas **Node 20+** (22 recomendado) y **[Claude Code](https://claude.com/cla
 
 ```bash
 # 1. Consigue el código — o pulsa "Use this template" en GitHub
-git clone https://github.com/qvacode/calco mi-web && cd mi-web
+git clone https://github.com/qvacode-ltda/calco mi-web && cd mi-web
 
 # 2. Instala todo: dependencias + el navegador Playwright de extracción
 npm run setup

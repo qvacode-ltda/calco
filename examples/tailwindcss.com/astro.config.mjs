@@ -11,7 +11,7 @@ export default defineConfig({
   // Public demo lives on GitHub Pages (project site → served under /calco/).
   // ASTRO_BASE is set only by the Pages workflow; local dev and Cloudflare
   // deploys keep the default root base.
-  site: "https://qvacode.github.io",
+  site: "https://qvacode-ltda.github.io",
   base: process.env.ASTRO_BASE ?? "/",
   output: "static",
   vite: {

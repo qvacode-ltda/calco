@@ -3,7 +3,7 @@
  *
  * public/ assets are copied verbatim by Astro, so their root-relative URLs
  * (/images/…, /fonts/…) break when the site is served under a base path
- * (https://qvacode.github.io/calco/). Rewriting the built output keeps the
+ * (https://qvacode-ltda.github.io/calco/). Rewriting the built output keeps the
  * clone's source pristine (fidelity to the original markup) while making the
  * demo deployable anywhere. Also injects a noindex meta so the demo never
  * competes with the original site in search results.

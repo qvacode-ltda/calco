@@ -1,6 +1,6 @@
 # tailwindcss.com — cloned with Calco
 
-**Live demo:** <https://qvacode.github.io/calco/>
+**Live demo:** <https://qvacode-ltda.github.io/calco/>
 
 This is the proof-of-work for [**Calco**](../../README.md): a static clone of the
 [tailwindcss.com](https://tailwindcss.com) homepage produced by the `/clone-website` pipeline,
