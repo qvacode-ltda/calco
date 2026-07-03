@@ -1,0 +1,201 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<!--
+  Placeholder start page — replaced entirely by the first /clone-website run.
+  Styled after the QvaCode design system but fully self-contained (scoped vars,
+  no @theme dependency) so deleting it leaves no brand residue in the tokens.
+-->
+<BaseLayout
+  title="Calco — clone any website into a clean Astro codebase"
+  description="Open-source website reverse-engineering kit. Run /clone-website <url> in Claude Code and get a pixel-perfect Astro + Tailwind v4 rebuild, deployable to Cloudflare in one command."
+>
+  <main class="calco">
+    <section class="frame">
+      <p class="kicker"><span class="tick" aria-hidden="true"></span>website reverse-engineering kit</p>
+
+      <p class="brand">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect
+            x="7"
+            y="7"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="var(--muted)"
+            stroke-width="2"
+            stroke-dasharray="3 3"></rect>
+          <rect
+            x="12"
+            y="12"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="var(--accent)"
+            stroke-width="3"></rect>
+        </svg>
+        <span class="wordmark">CALCO</span>
+      </p>
+
+      <h1>A production website is <em>validated research</em>. Make it your starting point.</h1>
+
+      <p class="sub">
+        Calco reverse-engineers any site into a clean, static Astro + Tailwind v4 codebase — real
+        markup, real assets, pixel-perfect — ready to deploy to Cloudflare in one command.
+      </p>
+
+      <ol class="steps">
+        <li><span class="n">01</span><code>npm run setup</code></li>
+        <li><span class="n">02</span><code>claude</code></li>
+        <li><span class="n">03</span><code>/clone-website &lt;url&gt;</code></li>
+      </ol>
+
+      <footer>
+        <a href="https://github.com/qvacode/calco">readme</a>
+        <a href="https://qvacode.github.io/calco/">live demo</a>
+        <a href="https://qvacode.com.br">built by <strong>QVACODE</strong></a>
+      </footer>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .calco {
+    --page: #0a0e1a;
+    --surface: #131a2e;
+    --ink: #f4f7fb;
+    --muted: #8a9bb5;
+    --accent: #22d3ee;
+    --line: #22314f;
+
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: 1.5rem;
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+
+  .frame {
+    max-width: 40rem;
+    padding-block: 3.5rem;
+    border-block: 1px solid var(--line);
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .tick {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--accent);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 1.75rem;
+  }
+
+  .mark {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .wordmark {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  h1 {
+    margin-top: 1.25rem;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .sub {
+    margin-top: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .steps li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .steps .n {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .steps code {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 200ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  footer a:hover {
+    color: var(--ink);
+  }
+
+  footer a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  footer strong {
+    color: var(--ink);
+    letter-spacing: 0.1em;
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Absolute or root-relative OG image path. */
+  image?: string;
+  /** Canonical URL; defaults to the current page URL. */
+  canonical?: string;
+  /** Extra <head> content (fonts, preloads, JSON-LD) via a named slot. */
+}
+
+const {
+  title,
+  description = "",
+  image = "/seo/og-image.png",
+  canonical = Astro.url.href,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      Fonts: the clone pipeline injects the target site's fonts here
+      (Google Fonts <link> or self-hosted @font-face pointing at /fonts/…).
+    -->
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
