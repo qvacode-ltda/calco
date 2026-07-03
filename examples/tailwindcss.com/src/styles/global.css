@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/*
+  ─────────────────────────────────────────────────────────────────────────────
+  DESIGN TOKENS — clone of tailwindcss.com (see docs/research/tailwindcss.com/DESIGN.md)
+  The target is built on Tailwind v4's DEFAULT palette (gray ramp + sky/blue/pink),
+  which this project already ships — so we only override fonts + a few semantic
+  aliases. Colors use oklch(); the target's own utilities (text-gray-950, bg-white,
+  text-sky-500, …) are reproduced verbatim in components.
+  ─────────────────────────────────────────────────────────────────────────────
+*/
+
+/* Self-hosted fonts (downloaded to public/fonts by scripts/download-assets.mjs) */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/InterVariable-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/IBMPlexMono-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/IBMPlexMono-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/IBMPlexMono-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/IBMPlexMono-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/SourceSansPro-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/UbuntuMono-Bold.woff2") format("woff2");
+}
+
+@theme {
+  /* Fonts (override Tailwind's defaults with the target's) */
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Semantic aliases (Tailwind v4's gray ramp + accents already exist natively) */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.1296 0.0274 261.69); /* gray-950 */
+  --color-muted-foreground: oklch(0.4461 0.0298 257.68); /* gray-600 */
+  --color-primary: oklch(0 0 0);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-surface-muted: oklch(0.9846 0.0017 247.84); /* gray-50 */
+}
+
+/* Hero code-editor "flash" highlight (target custom keyframe) */
+@keyframes flash-code {
+  0% {
+    background-color: color-mix(in oklab, oklch(0.692 0.1595 240.38) 12%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/*
+  Tailwind v4 arbitrary animation hook: `class="animate-[flash-code_1s_ease-in-out_infinite]"`
+  resolves natively via the arbitrary value. We also register the keyframe with @theme so the
+  scanner keeps it, and expose a named `flash-code` animation for convenience.
+*/
+@theme {
+  --animate-flash-code: flash-code 1s ease-in-out infinite;
+}
+
+/*
+  Custom utility from the target (used by the Sponsors logo grid): a pair of
+  full-bleed 200vw horizontal hairlines above and below a grid cell. Applied via
+  responsive nth-child variants, e.g. `xl:nth-[4n+1]:line-y`.
+*/
+@utility line-y {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: -100vw;
+    width: 200vw;
+    height: 1px;
+    background-color: color-mix(in oklab, var(--color-gray-950) 5%, transparent);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &::before,
+    &::after {
+      background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}

@@ -1,0 +1,171 @@
+---
+/**
+ * InTheWild — "Tailwind in the wild" screenshot gallery (tailwindcss.com clone).
+ *
+ * Faithful rebuild of the real rendered DOM. Structure (top → bottom):
+ *   1. mono annotation row describing the <h2> utilities (aria-hidden, whitespace-pre)
+ *   2. eyebrow "Tailwind in the wild" — sits above on mobile, rotates -90° into the
+ *      left gutter at 2xl (2xl:absolute / 2xl:-rotate-90 against --gutter-width)
+ *   3. <h2> headline
+ *   4. mono annotation row describing the intro <p> utilities
+ *   5. intro paragraph
+ *   6. masonry gallery: 5 flex columns (2 → 3 → 4 → 5 as breakpoints unlock) of real
+ *      screenshots. Each card rests at 75% opacity; on hover it restores to 100% and
+ *      a centered domain pill (with an "open" arrow SVG) fades in — pure CSS group-hover.
+ *
+ * Every row after the annotation is wrapped in a full-bleed hairline (before/after
+ * pseudo-elements, w-[200vw] / -left-[100vw]) so the rules span the viewport.
+ * Self-contained: no required props. Screenshots live in /public/images/.
+ */
+
+// Full-bleed top+bottom hairline rules shared by the heading / intro / gallery rows.
+const HAIRLINE =
+  "relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10";
+
+const CARD_LINK = "group relative opacity-75 transition-opacity hover:opacity-100";
+
+const PILL =
+  "absolute top-1/2 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 transform flex-row items-center gap-[calc(1rem/16*7)] rounded-full border border-gray-950 bg-gray-950/90 py-0.5 pr-2 pb-1 pl-3 text-center font-mono text-sm/6 font-medium text-white opacity-0 inset-ring inset-ring-white/10 transition-opacity group-hover:flex group-hover:opacity-100";
+
+interface WildCard {
+  href: string;
+  alt: string;
+  img: string; // file under /public/images/
+  label: string; // domain shown in the hover pill
+  width: number;
+  height: number;
+}
+
+interface WildColumn {
+  /** column display/visibility utilities — always-on columns are `flex`, others toggle. */
+  class: string;
+  cards: WildCard[];
+}
+
+const columns: WildColumn[] = [
+  {
+    class: "hidden flex-col gap-2 lg:flex", // appears at ≥lg
+    cards: [
+      { href: "https://openai.com/", alt: "OpenAI", img: "wild-openai.png", label: "openai.com", width: 303, height: 257 },
+      { href: "https://opalcamera.com/", alt: "Opal", img: "wild-opal.png", label: "opalcamera.com", width: 303, height: 426 },
+      { href: "https://feastables.com/", alt: "Feastables", img: "wild-feastables.png", label: "feastables.com", width: 303, height: 417 },
+    ],
+  },
+  {
+    class: "flex flex-col gap-2", // always visible
+    cards: [
+      { href: "https://gumroad.com/", alt: "Gumroad", img: "wild-gumroad.png", label: "gumroad.com", width: 200, height: 404 },
+      { href: "https://skims.com/", alt: "Skims", img: "wild-skims.png", label: "skims.com", width: 200, height: 393 },
+      { href: "https://reddit.com/", alt: "Reddit", img: "wild-reddit.png", label: "reddit.com", width: 200, height: 303 },
+    ],
+  },
+  {
+    class: "hidden flex-col gap-2 sm:flex", // appears at ≥sm
+    cards: [
+      { href: "https://rivian.com/", alt: "Rivian", img: "wild-rivian.png", label: "rivian.com", width: 500, height: 310 },
+      { href: "https://shopify.com/", alt: "Shopify", img: "wild-shopify.png", label: "shopify.com", width: 500, height: 465 },
+      { href: "https://clerk.dev/", alt: "Clerk", img: "wild-clerk.png", label: "clerk.dev", width: 500, height: 325 },
+    ],
+  },
+  {
+    class: "hidden flex-col gap-2 xl:flex", // appears at ≥xl
+    cards: [
+      { href: "https://www.theverge.com/", alt: "The Verge", img: "wild-verge.png", label: "theverge.com", width: 200, height: 408 },
+      { href: "https://io.google/", alt: "Google IO", img: "wild-googleio.png", label: "io.google", width: 200, height: 419 },
+      { href: "https://ted.com/", alt: "TED Talks", img: "wild-ted.png", label: "ted.com", width: 200, height: 273 },
+    ],
+  },
+  {
+    class: "flex flex-col gap-2", // always visible
+    cards: [
+      { href: "https://poolside.ai/", alt: "Poolside", img: "wild-poolside.png", label: "poolside.ai", width: 293, height: 247 },
+      { href: "https://midjourney.com/", alt: "Midjourney", img: "wild-midjourney.png", label: "midjourney.com", width: 293, height: 498 },
+      { href: "https://www.jpl.nasa.gov/", alt: "NASA/JPL", img: "wild-nasa.png", label: "jpl.nasa.gov", width: 293, height: 354 },
+    ],
+  },
+];
+---
+
+<section class="relative max-w-full" aria-labelledby="in-the-wild-heading">
+  <!-- mono annotation describing the heading utilities -->
+  <div
+    aria-hidden="true"
+    class="h-6 max-w-screen items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 2xl:flex dark:text-white/25"
+  >text-4xl <span class="inline dark:hidden">text-gray-950</span><span class="hidden dark:inline">text-white</span> tracking-tighter</div>
+
+  <!-- eyebrow — rotates -90° into the gutter at 2xl -->
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 2xl:before:hidden 2xl:after:hidden dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <p
+      class="top-0 -left-[var(--gutter-width)] origin-bottom-right text-left font-mono text-sm font-semibold tracking-widest text-fuchsia-500 uppercase max-2xl:mb-4 max-2xl:px-2 max-sm:px-4 sm:text-xs 2xl:absolute 2xl:-translate-x-full 2xl:-translate-y-full 2xl:-rotate-90 2xl:text-right dark:text-fuchsia-400"
+    >
+      Tailwind in the wild
+    </p>
+  </div>
+
+  <!-- heading -->
+  <div class={HAIRLINE}>
+    <h2
+      id="in-the-wild-heading"
+      class="max-w-lg px-2 text-[2.5rem]/10 font-medium tracking-tighter text-balance max-sm:px-4"
+    >
+      Build whatever you want, without touching your CSS file.
+    </h2>
+  </div>
+
+  <!-- mono annotation describing the paragraph utilities -->
+  <div
+    class="flex h-6 items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 sm:h-10 dark:text-white/25"
+  >text-base <span class="inline dark:hidden">text-gray-950</span><span class="hidden dark:inline">text-white</span></div>
+
+  <!-- intro -->
+  <div class={HAIRLINE}>
+    <p
+      class="max-w-(--breakpoint-md) px-2 text-base/7 text-gray-600 max-sm:px-4 dark:text-gray-400"
+    >
+      Because Tailwind is so low-level, it never encourages you to design the same
+      site twice. Some of your favorite sites are built with Tailwind, and you
+      probably had no idea.
+    </p>
+  </div>
+
+  <!-- masonry gallery -->
+  <div class:list={["mt-18", HAIRLINE]}>
+    <div class="h-auto bg-gray-950/5 p-2 dark:bg-white/10">
+      <div
+        class="@container isolate flex h-full flex-col flex-row gap-2 overflow-hidden rounded-2xl bg-white p-0! p-2 outline outline-gray-950/5 dark:bg-gray-950 dark:outline-white/10"
+      >
+        {
+          columns.map((column) => (
+            <div class={column.class}>
+              {column.cards.map((card) => (
+                <a href={card.href} rel="noreferrer" target="_blank" class={CARD_LINK}>
+                  <div class={PILL}>
+                    {card.label}
+                    <svg viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.22 11.78a.75.75 0 0 1 0-1.06L9.44 5.5H5.75a.75.75 0 0 1 0-1.5h5.5a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0V6.56l-5.22 5.22a.75.75 0 0 1-1.06 0Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <img
+                    src={`/images/${card.img}`}
+                    alt={card.alt}
+                    width={card.width}
+                    height={card.height}
+                    loading="lazy"
+                    decoding="async"
+                    style="color: transparent"
+                  />
+                </a>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

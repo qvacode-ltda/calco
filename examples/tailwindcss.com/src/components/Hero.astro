@@ -1,0 +1,227 @@
+---
+/**
+ * Hero — tailwindcss.com clone.
+ *
+ * Faithful reproduction of the rendered hero DOM
+ * (docs/research/tailwindcss.com/raw/index.pretty.html, lines 410–563):
+ *  - aria-hidden mono "gutter annotation" rows (text-8xl … tracking-tighter hints)
+ *  - the giant H1 wrapped in a before/after 200vw hairline block
+ *  - the subtitle with the four utility words (flex, pt-4, text-center, rotate-90)
+ *    in sky mono, also inside a hairline block
+ *  - mobile "Get started" + desktop "Get started" / "Quick search" controls
+ *  - the dark IBM Plex Mono code-editor mockup (verbatim shiki markup) whose
+ *    lines flash via the flash-code keyframe (defined in src/styles/global.css)
+ *  - the rendered product card using the real image /images/hero-cover.png
+ *
+ * This component is a single grid item inside BaseLayout's `gap-24` middle column
+ * (which already provides the outer page grid + diagonal-hatch gutter rails).
+ * Self-contained: no required props. Class strings preserved verbatim from source.
+ */
+
+// ── Dark editor: rebuild the shiki-highlighted markup verbatim, injected via
+//    set:html so the literal `<`, `>`, `"` render as text (entities) while the
+//    <span> structure and inline color styles are real DOM. Each .line flashes
+//    with a staggered delay to give the "live" editor feel. ─────────────────────
+const c = (color: string, text: string): string =>
+  `<span style="color:var(--color-${color})">${text}</span>`;
+const plain = (text: string): string => `<span>${text}</span>`;
+const line = (i: number, ...spans: string[]): string =>
+  `<span class="line animate-[flash-code_1.6s_ease-in-out_infinite]" style="animation-delay:${i * 110}ms">${spans.join("")}</span>`;
+
+const lt = c("slate-400", "&lt;");
+const gt = c("slate-400", "&gt;");
+const lts = c("slate-400", "&lt;/");
+const eq = c("slate-400", "=");
+const sp = c("slate-400", " ");
+const selfClose = c("slate-400", " /&gt;");
+const tag = (t: string): string => c("pink-400", t);
+const attr = (t: string): string => c("slate-300", t);
+const str = (t: string): string => c("sky-300", t);
+const txt = (t: string): string => c("slate-50", t);
+
+const codeInner =
+  "<code><code>" +
+  [
+    line(0, lt, tag("div"), sp, attr("class"), eq, str("&quot;flex flex-col items-center rounded-2xl&quot;"), gt),
+    line(1, plain("  "), lt, tag("div"), gt),
+    line(2, plain("    "), lt, tag("img"), sp, attr("class"), eq, str("&quot;size-48 shadow-xl&quot;"), sp, attr("alt"), eq, str("&quot;&quot;"), sp, attr("src"), eq, str("&quot;/img/cover.png&quot;"), selfClose),
+    line(3, plain("  "), lts, tag("div"), gt),
+    line(4, plain("  "), lt, tag("div"), sp, attr("class"), eq, str("&quot;flex&quot;"), gt),
+    line(5, plain("    "), lt, tag("span"), gt, txt("Class Warfare"), lts, tag("span"), gt),
+    line(6, plain("    "), lt, tag("span"), gt, txt("The Anti-Patterns"), lts, tag("span"), gt),
+    line(7, plain("    "), lt, tag("span"), sp, attr("class"), eq, str("&quot;flex&quot;"), gt),
+    line(8, plain("      "), lt, tag("span"), gt, txt("No. 4"), lts, tag("span"), gt),
+    line(9, plain("      "), lt, tag("span"), gt, txt("&middot;"), lts, tag("span"), gt),
+    line(10, plain("      "), lt, tag("span"), gt, txt("2025"), lts, tag("span"), gt),
+    line(11, plain("    "), lts, tag("span"), gt),
+    line(12, plain("  "), lts, tag("div"), gt),
+    line(13, lts, tag("div"), gt),
+  ].join("") +
+  "</code></code>";
+---
+
+<section aria-labelledby="hero-heading">
+  <div
+    aria-hidden="true"
+    class="flex h-16 items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 sm:h-24 dark:text-white/25"
+  ><span class="hidden max-sm:inline">text-4xl </span><span class="hidden sm:max-md:inline">text-5xl </span><span class="hidden lg:max-xl:inline">text-6xl </span><span class="hidden xl:inline">text-8xl </span><span class="inline dark:hidden">text-gray-950 </span><span class="hidden dark:inline">text-white </span>tracking-tighter <span class="max-sm:hidden">text-balance</span></div>
+
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <h1
+      id="hero-heading"
+      class="px-2 text-4xl tracking-tighter text-balance max-lg:font-medium max-sm:px-4 sm:text-5xl lg:text-6xl xl:text-8xl"
+    >
+      Rapidly build modern websites without ever leaving your HTML.
+    </h1>
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="flex h-6 items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 sm:h-10 dark:text-white/25"
+  >text-lg <span class="inline dark:hidden">text-gray-950</span><span class="hidden dark:inline">text-white</span> font-medium</div>
+
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <p
+      class="max-w-(--breakpoint-md) px-2 text-lg/7 font-medium text-gray-600 max-sm:px-4 dark:text-gray-400"
+    >
+      A utility-first CSS framework packed with classes like <span
+        class="font-mono text-[1.0625rem] text-sky-500 dark:text-sky-400">flex</span
+      >, <span class="font-mono text-[1.0625rem] text-sky-500 dark:text-sky-400"
+        >pt-4</span
+      >, <span class="font-mono text-[1.0625rem] text-sky-500 dark:text-sky-400"
+        >text-center</span
+      > and <span class="font-mono text-[1.0625rem] text-sky-500 dark:text-sky-400"
+        >rotate-90</span
+      > that can be composed to build any design, directly in your markup.
+    </p>
+  </div>
+
+  <div
+    class="relative mt-10 px-4 before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 sm:hidden dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <a
+      class="z-1 inline-block w-full rounded-4xl bg-black px-4 py-2 text-center text-sm/6 font-semibold text-white hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
+      href="/docs/installation">Get started</a
+    >
+  </div>
+
+  <div
+    class="relative mt-4 before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 sm:mt-10 sm:px-2 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <div class="flex gap-4 max-sm:px-4">
+      <a
+        class="z-1 inline-block rounded-4xl bg-black px-4 py-2 text-sm/6 font-semibold text-white hover:bg-gray-800 max-sm:hidden dark:bg-gray-700 dark:hover:bg-gray-600"
+        href="/docs/installation">Get started</a
+      ><button
+        type="button"
+        class="grid w-full grid-cols-[auto_1fr_auto] items-center gap-1 rounded-full px-4 py-2 text-left text-sm/6 text-gray-950/50 inset-ring inset-ring-gray-950/8 sm:w-80 dark:bg-white/5 dark:text-white/50 dark:inset-ring-white/15"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          class="-ml-0.5 size-4 fill-gray-600 dark:fill-gray-500"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd"></path>
+        </svg>Quick search<kbd
+          class={"[.os-macos_&]:block hidden font-sans text-xs/4 text-gray-500 dark:text-gray-400"}
+          ><span class="opacity-60">⌘</span>K</kbd
+        ><kbd
+          class={"not-[.os-macos_&]:block hidden font-sans text-xs/4 text-gray-500 dark:text-gray-400"}
+          ><span class="opacity-60">Ctrl</span> K</kbd
+        >
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="relative mt-24 before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-3">
+      <div class="bg-gray-950/5 p-2 lg:col-span-2 lg:-mx-px dark:bg-white/10">
+        <div class="rounded-xl bg-gray-950">
+          <div
+            class="rounded-xl p-1 text-sm scheme-dark dark:inset-ring dark:inset-ring-white/10"
+          >
+            <div class="flex gap-2 p-2">
+              <span class="size-3 rounded-full bg-white/20"></span><span
+                class="size-3 rounded-full bg-white/20"></span><span
+                class="size-3 rounded-full bg-white/20"></span>
+            </div>
+            <div class="with-line-numbers text-[13px]/6 *:*:p-3!">
+              <div
+                class="*:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:overflow-auto *:rounded-lg *:bg-white/10! *:p-5 *:inset-ring *:inset-ring-white/10 dark:*:bg-white/5! dark:*:inset-ring-white/5 **:[.line]:isolate **:[.line]:block **:[.line]:not-last:min-h-[1lh]"
+              >
+                <pre tabindex="0" set:html={codeInner}></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative border-(--pattern-fg) bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 max-lg:h-66 max-lg:border-t lg:border-l dark:[--pattern-fg:var(--color-white)]/10"
+      >
+        <div
+          class="absolute right-1/2 max-lg:bottom-8 max-md:translate-x-1/2 md:right-16 lg:top-1/2 lg:-translate-y-1/2 2xl:right-1/2 2xl:translate-x-[calc(50%-3rem)]"
+        >
+          <div
+            class="@container w-[262px] rounded-3xl bg-black/5 p-2 outline outline-white/15 backdrop-blur-md xl:ml-[3rem] dark:bg-white/10"
+          >
+            <div
+              class="relative flex w-full flex-col rounded-2xl bg-white outline outline-black/5 dark:bg-gray-950"
+            >
+              <img
+                alt=""
+                class="size-48 shadow-xl transition-[border-radius] duration-350 dark:outline-1 dark:-outline-offset-1 dark:outline-white/10"
+                src="/images/hero-cover.png"
+                width="192"
+                height="192"
+                loading="lazy"
+              />
+              <div class="flex flex-col">
+                <span
+                  class="text-gray-950 transition-[font-size] duration-350 dark:text-white"
+                  >Class Warfare</span
+                ><span
+                  class="text-gray-950 transition-colors duration-350 dark:text-white"
+                  >The Anti-Patterns</span
+                ><span
+                  class="flex text-gray-950 transition-colors duration-350 dark:text-white"
+                  ><span>No. 4</span><span>·</span><span>2025</span></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /*
+    Reproduce the target's `.with-line-numbers` gutter (the source relies on this
+    custom class to number each `.line`, injected via set:html so it must be global).
+  */
+  .with-line-numbers {
+    counter-reset: hero-code-line;
+  }
+  .with-line-numbers .line {
+    counter-increment: hero-code-line;
+  }
+  .with-line-numbers .line::before {
+    content: counter(hero-code-line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 1.25rem;
+    text-align: right;
+    color: var(--color-slate-600);
+    user-select: none;
+  }
+</style>

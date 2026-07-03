@@ -1,0 +1,266 @@
+---
+/**
+ * ShipFaster — tailwindcss.com clone ("Ship faster and smaller." section).
+ *
+ * Faithful reproduction of the rendered DOM
+ * (docs/research/tailwindcss.com/raw/index.pretty.html, lines 6054–6228):
+ *  - the aria-hidden mono "gutter annotation" row (2xl only)
+ *  - the "How it works" eyebrow that rotates into the gutter at 2xl
+ *    (2xl:absolute / 2xl:-rotate-90), wrapped in a before/after 200vw hairline block
+ *  - the H2 + paragraph, each in their own 200vw hairline block
+ *  - the dark IBM Plex Mono code-editor mockup: a "group" holding the live HTML
+ *    editor panel (verbatim shiki markup, incl. the blinking typing-cursor span),
+ *    an empty terminal panel, and the build.css output panel
+ *
+ * Single grid item inside BaseLayout's middle column (which supplies the outer
+ * page grid + diagonal-hatch gutter rails). Self-contained: no required props.
+ * Class strings preserved verbatim from source.
+ *
+ * NOTE: the panels' "live" typing/build animation is driven at runtime by the
+ * target's JS via data-modified / data-running / data-finished on the `.group`.
+ * We reproduce the captured SSR DOM verbatim, so those states stay unset: the
+ * build.css panel keeps its initial `opacity-0` and the typing cursor stays shown.
+ */
+
+// ── Rebuild the shiki-highlighted markup verbatim, injected via set:html so the
+//    literal `<`, `>`, `"` render as text (entities) while the <span> structure
+//    and inline color styles are real DOM. ─────────────────────────────────────
+const c = (color: string, text: string): string =>
+  `<span style="color:var(--color-${color})">${text}</span>`;
+const line = (...spans: string[]): string =>
+  `<span class="line">${spans.join("")}</span>`;
+
+// The blinking "typing" cursor that lives inside the button's class="" value.
+const cursor =
+  `<span class="transition-opacity duration-300 group-data-finished:opacity-0 after:absolute after:mt-1.5 after:inline-block after:h-[1.2em] after:w-px after:border-r-2 after:border-sky-400 after:bg-transparent after:content-['']"></span>`;
+
+// index.html source (verbatim shiki output)
+const htmlCode =
+  "<code>" +
+  [
+    line(c("slate-400", "&lt;!"), c("pink-400", "DOCTYPE"), c("slate-300", " html"), c("slate-400", "&gt;")),
+    line(c("slate-400", "&lt;"), c("pink-400", "html"), c("slate-300", " lang"), c("slate-400", "="), c("sky-300", "&quot;en&quot;"), c("slate-400", "&gt;")),
+    line(c("slate-400", "  &lt;"), c("pink-400", "head"), c("slate-400", "&gt;")),
+    line(c("slate-400", "    &lt;"), c("pink-400", "meta"), c("slate-300", " charset"), c("slate-400", "="), c("sky-300", "&quot;UTF-8&quot;"), c("slate-400", " /&gt;")),
+    line(c("slate-400", "    &lt;"), c("pink-400", "meta"), c("slate-300", " name"), c("slate-400", "="), c("sky-300", "&quot;viewport&quot;"), c("slate-300", " content"), c("slate-400", "="), c("sky-300", "&quot;width=device-width, initial-scale=1.0&quot;"), c("slate-400", " /&gt;")),
+    line(c("slate-400", "    &lt;"), c("pink-400", "title"), c("slate-400", "&gt;"), c("slate-50", "Tailwind CSS"), c("slate-400", "&lt;/"), c("pink-400", "title"), c("slate-400", "&gt;")),
+    line(c("slate-400", "    &lt;"), c("pink-400", "link"), c("slate-300", " rel"), c("slate-400", "="), c("sky-300", "&quot;stylesheet&quot;"), c("slate-300", " href"), c("slate-400", "="), c("sky-300", "&quot;/build.css&quot;"), c("slate-400", " /&gt;")),
+    line(c("slate-400", "  &lt;/"), c("pink-400", "head"), c("slate-400", "&gt;")),
+    line(c("slate-400", "  &lt;"), c("pink-400", "body"), c("slate-400", "&gt;")),
+    line(c("slate-400", "    &lt;"), c("pink-400", "button"), c("slate-300", " class"), c("slate-400", "="), c("sky-300", "&quot;" + cursor + "&quot;"), c("slate-400", "&gt;&lt;/"), c("pink-400", "button"), c("slate-400", "&gt;")),
+    line(c("slate-400", "  &lt;/"), c("pink-400", "body"), c("slate-400", "&gt;")),
+    line(c("slate-400", "&lt;/"), c("pink-400", "html"), c("slate-400", "&gt;")),
+  ].join("") +
+  "</code>";
+
+// build.css output (verbatim shiki output)
+const cssCode =
+  "<code>" +
+  [
+    line(c("slate-300", "@layer"), c("slate-50", " utilities "), c("slate-300", "{")),
+    line(c("slate-50", "}")),
+  ].join("") +
+  "</code>";
+---
+
+<div class="relative max-w-full">
+  <div
+    aria-hidden="true"
+    class="hidden h-4 items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 2xl:visible 2xl:flex dark:text-white/25"
+  >
+    text-4xl <span class="inline dark:hidden">text-gray-950</span
+    ><span class="hidden dark:inline">text-white</span> tracking-tighter text-balance
+  </div>
+
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 2xl:before:hidden 2xl:after:hidden dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <p
+      class="top-0 -left-[var(--gutter-width)] origin-bottom-right text-left font-mono text-sm font-semibold tracking-widest text-sky-500 uppercase max-2xl:mb-4 max-2xl:px-2 max-sm:px-4 sm:text-xs 2xl:absolute 2xl:-translate-x-full 2xl:-translate-y-full 2xl:-rotate-90 2xl:text-right dark:text-sky-400"
+    >
+      How it works
+    </p>
+  </div>
+
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <h2
+      class="mt-4 px-2 text-[2.5rem]/10 font-medium tracking-tighter max-sm:px-4 2xl:mt-0"
+    >
+      Ship faster and smaller.
+    </h2>
+  </div>
+
+  <div
+    class="flex h-6 items-end px-2 font-mono text-xs/6 whitespace-pre text-black/20 max-sm:px-4 sm:h-10 dark:text-white/25"
+  >
+    text-base <span class="inline dark:hidden">text-gray-950</span
+    ><span class="hidden dark:inline">text-white</span>
+  </div>
+
+  <div
+    class="relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <p
+      class="max-w-(--breakpoint-md) px-2 text-base/7 text-gray-600 max-sm:px-4 dark:text-gray-400"
+    >
+      Tailwind automatically removes all unused CSS when building for production, which
+      means your final CSS bundle is the smallest it could possibly be. In fact, most
+      Tailwind projects ship less than 10kB of CSS to the client.
+    </p>
+  </div>
+
+  <div
+    class="relative mt-16 before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-gray-950/5 dark:before:bg-white/10 dark:after:bg-white/10"
+  >
+    <div class="w-full bg-gray-950/5 p-2 dark:bg-white/10">
+      <div class="not-prose">
+        <div
+          class="@container rounded-xl bg-gray-950 in-[figure]:-mx-1 in-[figure]:-mb-1"
+        >
+          <div
+            class="rounded-xl p-1 text-sm scheme-dark dark:bg-white/5 dark:inset-ring dark:inset-ring-white/10"
+          >
+            <div class="group">
+              <div class="flex w-fit gap-2 p-1 pb-2">
+                <span
+                  class="inline-flex size-3 items-center justify-center rounded-full bg-white/20"
+                  ><span
+                    class="inline-flex size-1.5 items-center justify-center rounded-full bg-white/20 opacity-0 transition-opacity duration-300 ease-in group-data-modified:opacity-100 group-data-modified:duration-100 group-data-modified:ease-linear"
+                  ></span></span
+                ><span class="size-3 rounded-full bg-white/20"></span
+                ><span class="size-3 rounded-full bg-white/20"></span>
+              </div>
+              <div class="flex w-full flex-col gap-1 lg:h-132.5 lg:flex-row">
+                <div class="flex flex-col gap-1 lg:w-1/2 xl:w-5/8">
+                  <div
+                    aria-label="panel, HTML editor, animated"
+                    class="isolate flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-white/10 inset-ring inset-ring-white/5 max-lg:max-h-76 dark:bg-white/5"
+                    data-scroll-anchor="true"
+                  >
+                    <div
+                      class="sticky top-0 left-0 z-10 col-start-1 row-start-1 mb-px flex items-center gap-2 border-b border-b-white/5 bg-white/2.5 bg-clip-padding p-1 text-white backdrop-blur-lg"
+                      role="presentation"
+                      aria-label="Tab Bar"
+                    >
+                      <button
+                        class="isolate rounded-sm px-2 py-1 text-xs/5 text-white inset-ring-white/5 group-data-modified:italic hover:bg-white/10 aria-selected:bg-white/10 aria-selected:inset-ring"
+                        role="presentation"
+                        aria-selected="true"
+                      >
+                        index.html</button
+                      ><button
+                        class="isolate rounded-sm px-2 py-1 text-xs/5 text-white inset-ring-white/5 hover:bg-white/10 aria-selected:bg-white/10 aria-selected:inset-ring"
+                        role="presentation"
+                      >
+                        app.css</button
+                      ><button
+                        class="isolate rounded-sm px-2 py-1 text-xs/5 text-white italic inset-ring-white/5 hover:bg-white/10 aria-selected:bg-white/10 aria-selected:inset-ring"
+                        role="presentation"
+                      >
+                        package.json
+                      </button>
+                    </div>
+                    <div
+                      aria-label="editor, readonly, html file"
+                      data-sf-code
+                      class="with-line-numbers text-[0.8125rem]/[1.5rem] *:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:rounded-lg *:px-3 *:py-2 **:[.line]:isolate **:[.line]:block **:[.line]:not-last:min-h-[1lh] **:[code]:w-full **:[code]:pr-4 **:[pre]:w-full **:[pre]:whitespace-pre-wrap"
+                    >
+                      <pre
+                        class="shiki tailwindcss-theme"
+                        style="background-color: transparent; color: var(--color-slate-50);"
+                        tabindex="0"
+                        set:html={htmlCode}
+                      ></pre>
+                    </div>
+                  </div>
+                  <div
+                    aria-label="panel, terminal, animated"
+                    class="isolate flex h-32 shrink-0 flex-col overflow-hidden rounded-lg bg-white/10 inset-ring inset-ring-white/5 lg:h-46 dark:bg-white/5"
+                    data-scroll-anchor="true"
+                  >
+                    <div
+                      class="sticky top-0 left-0 z-10 col-start-1 row-start-1 mb-px flex items-center gap-2 border-b border-b-white/5 bg-white/2.5 bg-clip-padding p-1 text-white backdrop-blur-lg"
+                      role="presentation"
+                      aria-label="Tab Bar"
+                    >
+                      <button
+                        class="isolate rounded-sm px-2 py-1 text-xs/5 text-white inset-ring-white/5 hover:bg-white/10 aria-selected:bg-white/10 aria-selected:inset-ring"
+                        role="presentation"
+                        aria-selected="true"
+                      >
+                        Terminal
+                      </button>
+                    </div>
+                    <div
+                      class="text-[0.8125rem]/[1.5rem] *:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:rounded-lg *:px-4 *:py-2 **:[.line]:isolate **:[.line]:block **:[.line]:not-last:min-h-[1lh] **:[code]:pr-4"
+                    >
+                      <pre class="text-slate-50"><code></code></pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex h-66 flex-col gap-2.5 lg:h-auto lg:w-1/2 xl:w-3/8">
+                  <div
+                    aria-label="panel, built CSS, animated"
+                    class="isolate flex h-full flex-col overflow-hidden rounded-lg bg-white/10 inset-ring inset-ring-white/5 dark:bg-white/5"
+                    data-scroll-anchor="true"
+                  >
+                    <div
+                      class="sticky top-0 left-0 z-10 col-start-1 row-start-1 mb-px flex items-center gap-2 border-b border-b-white/5 bg-white/2.5 bg-clip-padding p-1 text-white backdrop-blur-lg"
+                      role="presentation"
+                      aria-label="Tab Bar"
+                    >
+                      <button
+                        class="isolate rounded-sm px-2 py-1 text-xs/5 text-white inset-ring-white/5 hover:bg-white/10 aria-selected:bg-white/10 aria-selected:inset-ring"
+                        role="presentation"
+                        aria-selected="true"
+                      >
+                        build.css
+                      </button>
+                    </div>
+                    <div
+                      aria-label="editor, readonly, built CSS"
+                      data-sf-code
+                      class="with-line-numbers text-[0.8125rem]/[1.5rem] opacity-0 *:flex *:*:max-w-none *:*:shrink-0 *:*:grow *:rounded-lg *:px-4 *:py-2 group-data-finished:opacity-100 group-data-running:opacity-100 **:[.line]:isolate **:[.line]:block **:[.line]:not-last:min-h-[1lh] **:[code]:w-full **:[code]:pr-4 **:[pre]:w-full **:[pre]:whitespace-pre-wrap"
+                    >
+                      <pre
+                        class="shiki tailwindcss-theme"
+                        style="background-color: transparent; color: var(--color-slate-50);"
+                        tabindex="0"
+                        set:html={cssCode}
+                      ></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  /*
+    Reproduce the target's `.with-line-numbers` gutter (numbers each `.line`).
+    Injected via set:html, so it must be global; scoped to [data-sf-code] with a
+    dedicated counter so it never collides with the Hero's line-number styles.
+  */
+  [data-sf-code] {
+    counter-reset: sf-code-line;
+  }
+  [data-sf-code] .line {
+    counter-increment: sf-code-line;
+  }
+  [data-sf-code] .line::before {
+    content: counter(sf-code-line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 1.25rem;
+    text-align: right;
+    color: var(--color-slate-600);
+    user-select: none;
+  }
+</style>

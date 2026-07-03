@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Hero from "@/components/Hero.astro";
+import Sponsors from "@/components/Sponsors.astro";
+import Features from "@/components/Features.astro";
+import ShipFaster from "@/components/ShipFaster.astro";
+import InTheWild from "@/components/InTheWild.astro";
+import Templates from "@/components/Templates.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<BaseLayout
+  title="Tailwind CSS - Rapidly build modern websites without ever leaving your HTML."
+  description="A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup."
+>
+  <Header slot="header" />
+  <Hero />
+  <Sponsors />
+  <Features />
+  <ShipFaster />
+  <InTheWild />
+  <Templates />
+  <Footer />
+</BaseLayout>

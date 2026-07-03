@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tailwindcss-clone",
+  "compatibility_date": "2026-01-01",
+  // Static-first deploy: serve the built Astro site from Cloudflare Workers static assets.
+  // `npm run deploy` runs `astro build` then `wrangler deploy`.
+  "assets": {
+    "directory": "./dist",
+  },
+}
